@@ -1,0 +1,17 @@
+{
+  "name": "cf-reliable-email-service-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "send": "tsx send-email.ts",
+    "send:duplicate": "tsx send-email.ts --duplicate"
+  },
+  "dependencies": {
+    "cloudflare": "6.5.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0",
+    "typescript": "^5.5.0"
+  }
+}

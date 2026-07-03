@@ -1,0 +1,43 @@
+{
+  "name": "cf-reliable-email-service",
+  "version": "0.1.0",
+  "description": "Reliable email delivery with idempotency-key deduplication on Cloudflare Workers + Durable Objects",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "hono": "4.7.11"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.18.0",
+    "@cloudflare/workers-types": "5.20260703.1",
+    "typescript": "5.8.3",
+    "vitest": "^4.1.9",
+    "wrangler": "4.14.4"
+  },
+  "keywords": [
+    "cloudflare-workers",
+    "durable-objects",
+    "email",
+    "idempotency",
+    "idempotency-key",
+    "deduplication",
+    "email-routing",
+    "serverless",
+    "edge-computing"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meow-developer/cf-reliable-email-service.git"
+  },
+  "bugs": {
+    "url": "https://github.com/meow-developer/cf-reliable-email-service/issues"
+  },
+  "homepage": "https://github.com/meow-developer/cf-reliable-email-service#readme"
+}

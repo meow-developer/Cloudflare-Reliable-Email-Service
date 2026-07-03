@@ -1,0 +1,34 @@
+name = "cf-reliable-email-service"
+main = "src/index.ts"
+compatibility_date = "2026-07-02"
+
+# Durable Object binding — one instance per Idempotency-Key
+[[durable_objects.bindings]]
+name = "DEDUP"
+class_name = "DedupDO"
+
+# SQLite-backed Durable Object migrations
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["DedupDO"]
+
+# Email Service binding — internal RPC to CF Email Service
+[[send_email]]
+name = "EMAIL"
+
+# ─── Configuration ──────────────────────────────────────────
+# Dedup key TTL in milliseconds. Default: 300000 (5 minutes).
+# After this duration, a key is cleared and can be reused.
+[vars]
+DEDUP_TTL_MS = "300000"
+
+# ─── Authentication (Optional) ──────────────────────────────
+# Auth is handled at the Cloudflare edge by ZeroTrust Access.
+# Create an Access Application protecting this Worker's hostname,
+# then create a Service Token for your application to use.
+#
+# Your application sends:
+#   CF-Access-Client-Id: <service-token-id>
+#   CF-Access-Client-Secret: <service-token-secret>
+#
+# No auth code is needed in the Worker.

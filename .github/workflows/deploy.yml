@@ -1,0 +1,66 @@
+# ──────────────────────────────────────────────────────────────────
+# Demo CD Pipeline — Cloudflare Workers Deployment
+# ──────────────────────────────────────────────────────────────────
+# This workflow is a TEMPLATE for demonstration purposes.
+# The deployment trigger and deploy step are commented out.
+#
+# To enable real deployments:
+#   1. Uncomment the `on: push` trigger below
+#   2. Uncomment the "Deploy to Cloudflare Workers" step
+#   3. Add repository secrets:
+#      - CLOUDFLARE_API_TOKEN  (Workers Scripts: Edit)
+#      - CLOUDFLARE_ACCOUNT_ID
+#   4. (Optional) Configure the `production` environment in GitHub settings
+# ──────────────────────────────────────────────────────────────────
+
+name: Deploy (demo)
+
+# The push trigger is commented out — this workflow will NOT auto-run.
+# Uncomment to enable automatic deployment on push to main:
+#
+# on:
+#   push:
+#     branches: [main]
+
+# Keep workflow_dispatch so the pipeline structure can be tested manually
+# (runs install → test, but does NOT deploy while the step is commented out).
+on: workflow_dispatch
+
+# Only one deploy at a time — cancel in-flight runs on new push
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Cloudflare Workers
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".node-version"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm test
+
+      # ── Deploy step (commented out for demo) ──────────────────────
+      # Uncomment to enable deployment. Requires secrets:
+      #   CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID
+      #
+      # - name: Deploy to Cloudflare Workers
+      #   uses: cloudflare/wrangler-action@v3
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
